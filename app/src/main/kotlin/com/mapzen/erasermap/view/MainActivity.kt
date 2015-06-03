@@ -388,11 +388,11 @@ public class MainActivity : AppCompatActivity(), ViewController,
         if (location is Location) {
             val start: DoubleArray = doubleArray(location.getLatitude(), location.getLongitude())
             val dest: DoubleArray = doubleArray(simpleFeature.getLat(), simpleFeature.getLon())
-            Router.getRouter().setLocation(start).setLocation(dest).setCallback(this).fetch()
+            Router().setLocation(start).setLocation(dest).setCallback(this).fetch()
         }
     }
 
-    override fun success(route: Route?) {
+    override fun success(route: Route) {
         runOnUiThread({
             getSupportActionBar()?.hide()
             findViewById(R.id.route_preview).setVisibility(View.VISIBLE)
