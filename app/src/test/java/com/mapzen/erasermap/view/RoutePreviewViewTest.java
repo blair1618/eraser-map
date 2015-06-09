@@ -31,10 +31,10 @@ public class RoutePreviewViewTest {
         assertThat(routePreview).isNotNull();
     }
 
-    @Test
-    public void setDestination_shouldPopulateTextView() throws Exception {
-        routePreview.setDestination(getTestSimpleFeature());
-        assertThat(((TextView) routePreview.findViewById(R.id.destination)).getText())
-                .isEqualTo("Route from current location to " + TestHelper.TEST_TEXT);
-    }
+//    @Test
+//    public void setDestination_shouldPopulateTextView() throws Exception {
+//        routePreview.setDestination(getTestSimpleFeature());
+//        assertThat(((TextView) routePreview.findViewById(R.id.destination)).getText())
+//                .isEqualTo("Route from current location to " + TestHelper.TEST_TEXT);
+//    }
 }
