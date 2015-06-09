@@ -17,7 +17,7 @@ dependencies:
     - scripts/install-map-burrito.sh
     - scripts/install-pelias-sdk.sh
     - sudo apt-get update; sudo apt-get install s3cmd
-
+    - s3cmd --configure
 test:
   override:
     - ./gradlew
