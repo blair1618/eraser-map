@@ -17,7 +17,8 @@ dependencies:
     - scripts/install-map-burrito.sh
     - scripts/install-pelias-sdk.sh
     - sudo apt-get update; sudo apt-get install s3cmd
-    - s3cmd --configure
+    - printf "[default]\naccess_key = $S3_ACCESS_KEY\n secret_key = $S3_SECRET_KEY" > ~/.s3cfg
+
 test:
   override:
     - ./gradlew
