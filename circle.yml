@@ -17,7 +17,6 @@ dependencies:
     - scripts/install-map-burrito.sh
     - scripts/install-pelias-sdk.sh
     - sudo apt-get update; sudo apt-get install s3cmd
-    - git clone https://github.com/mapzen/apk-s3-lister.git; cd apk-s3-lister; ./upload.sh
 
 test:
   override:
