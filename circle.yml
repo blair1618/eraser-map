@@ -1,9 +1,23 @@
+machine:
+  ruby:
+    version: jruby-1.7.12
+  pre:
+    - curl -O http://apache.osuosl.org/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz && tar xvf apache-maven-3.1.1-bin.tar.gz -C ~/.m2
+  environment:
+    PATH: $HOME/.m2/apache-maven-3.1.1/bin:$PATH
+    M2_HOME: $HOME/.m2/apache-maven-3.1.1/
+    M2: $HOME/.m2/apache-maven-3.1.1/bin/
+    ANDROID_HOME: /usr/local/android-sdk-linux
+
+
 dependencies:
   pre:
     - echo y | android update sdk --all --no-ui --force --filter "extra-android-m2repository"
     - scripts/install-vtm.sh
     - scripts/install-map-burrito.sh
     - scripts/install-pelias-sdk.sh
+    - sudo apt-get update; sudo apt-get install s3cmd
+    - git clone https://github.com/mapzen/apk-s3-lister.git; cd apk-s3-lister; ./upload.sh
 
 test:
   override:
