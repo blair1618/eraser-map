@@ -29,9 +29,10 @@ import com.mapzen.pelias.gson.Result
 import com.mapzen.pelias.widget.AutoCompleteAdapter
 import com.mapzen.pelias.widget.AutoCompleteListView
 import com.mapzen.pelias.widget.PeliasSearchView
+import com.mapzen.tangram.Tangram
 import com.mapzen.valhalla.Route
 import com.mapzen.valhalla.Router
-import com.squareup.okhttp.HttpResponseCache
+import com.squareup.okhttp.Cache
 import com.squareup.otto.Bus
 import org.oscim.android.MapView
 import org.oscim.layers.marker.MarkerSymbol
@@ -56,7 +57,7 @@ public class MainActivity : AppCompatActivity(), ViewController,
 
     var locationClient: LostApiClient? = null
     @Inject set
-    var tileCache: HttpResponseCache? = null
+    var tileCache: Cache? = null
     @Inject set
     var savedSearch: SavedSearch? = null
     @Inject set
@@ -68,7 +69,8 @@ public class MainActivity : AppCompatActivity(), ViewController,
     @Inject set
 
     var app: PrivateMapsApplication? = null
-    var mapController: MapController? = null
+    var tangram : Tangram? = null
+//    var mapController: MapController? = null
     var autoCompleteAdapter: AutoCompleteAdapter? = null
     var optionsMenu: Menu? = null
     var poiLayer: PoiLayer? = null
@@ -121,25 +123,26 @@ public class MainActivity : AppCompatActivity(), ViewController,
     }
 
     private fun initMapController() {
-        val mapView = findViewById(R.id.map) as MapView
-        mapController = MapController(mapView.map())
-                .setHttpEngine(OkHttpEngine.OkHttpFactory(tileCache))
-                .setApiKey(BuildConfig.VECTOR_TILE_API_KEY)
-                .setTileSource(BASE_TILE_URL)
-                .addBuildingLayer()
-                .addLabelLayer()
-                .setTheme(STYLE_PATH)
-                .setCurrentLocationDrawable(getResources().getDrawable(FIND_ME_ICON))
+        tangram = findViewById(R.id.map) as Tangram
+        tangram?.setup(this)
+//        mapController = MapController(mapView.map())
+//                .setHttpEngine(OkHttpEngine.OkHttpFactory(tileCache))
+//                .setApiKey(BuildConfig.VECTOR_TILE_API_KEY)
+//                .setTileSource(BASE_TILE_URL)
+//                .addBuildingLayer()
+//                .addLabelLayer()
+//                .setTheme(STYLE_PATH)
+//                .setCurrentLocationDrawable(getResources().getDrawable(FIND_ME_ICON))
     }
 
     private fun initPoiLayer() {
-        val map = mapController?.getMap()
-        val defaultMarker = markerSymbolFactory?.getDefaultMarker()
-        val activeMarker = markerSymbolFactory?.getActiveMarker()
-        if (map is Map && defaultMarker is MarkerSymbol && activeMarker is MarkerSymbol) {
-            poiLayer = PoiLayer(map, defaultMarker, activeMarker)
-            poiLayer?.onPoiClickListener = this
-        }
+//        val map = mapController?.getMap()
+//        val defaultMarker = markerSymbolFactory?.getDefaultMarker()
+//        val activeMarker = markerSymbolFactory?.getActiveMarker()
+//        if (map is Map && defaultMarker is MarkerSymbol && activeMarker is MarkerSymbol) {
+//            poiLayer = PoiLayer(map, defaultMarker, activeMarker)
+//            poiLayer?.onPoiClickListener = this
+//        }
     }
 
     private fun initAutoCompleteAdapter() {
@@ -163,14 +166,14 @@ public class MainActivity : AppCompatActivity(), ViewController,
                 .setSmallestDisplacement(LOCATION_UPDATE_SMALLEST_DISPLACEMENT)
 
         LocationServices.FusedLocationApi?.requestLocationUpdates(locationRequest) {
-            location: Location ->  mapController?.showCurrentLocation(location)?.update()
+//            location: Location ->  mapController?.showCurrentLocation(location)?.update()
         }
     }
 
     private fun centerOnCurrentLocation() {
         val location = LocationServices.FusedLocationApi?.getLastLocation()
         if (location != null) {
-            mapController?.showCurrentLocation(location)?.resetMapAndCenterOn(location)
+//            mapController?.showCurrentLocation(location)?.resetMapAndCenterOn(location)
         }
     }
 
@@ -188,7 +191,7 @@ public class MainActivity : AppCompatActivity(), ViewController,
         if (searchView is PeliasSearchView) {
             listView.setAdapter(autoCompleteAdapter)
             val pelias = Pelias.getPelias();
-            pelias.setLocationProvider(MapLocationProvider(mapController))
+//            pelias.setLocationProvider(MapLocationProvider(mapController))
             searchView.setAutoCompleteListView(listView)
             searchView.setSavedSearch(savedSearch)
             searchView.setPelias(Pelias.getPelias())
@@ -337,8 +340,8 @@ public class MainActivity : AppCompatActivity(), ViewController,
             location.setLongitude(feature.getLon())
             poiLayer?.resetAllItems()
             poiLayer?.setActiveItem(position)
-            mapController?.resetMapAndCenterOn(location)
-            mapController?.getMap()?.updateMap(true)
+//            mapController?.resetMapAndCenterOn(location)
+//            mapController?.getMap()?.updateMap(true)
         }, 100)
     }
 
@@ -353,7 +356,7 @@ public class MainActivity : AppCompatActivity(), ViewController,
 
     private fun removeSearchResultsFromMap() {
         poiLayer?.removeAllItems()
-        mapController?.getMap()?.updateMap(true)
+//        mapController?.getMap()?.updateMap(true)
     }
 
     override fun showProgress() = findViewById(R.id.progress).setVisibility(View.VISIBLE)
